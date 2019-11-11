@@ -9,6 +9,11 @@ use yii\web\Response;
 use yii\filters\VerbFilter;
 use app\models\LoginForm;
 use app\models\ContactForm;
+use yii\bootstrap\ActiveForm;
+use yii\helpers\Html;
+use app\models\Form;
+
+
 
 class SiteController extends Controller
 {
@@ -125,4 +130,18 @@ class SiteController extends Controller
     {
         return $this->render('about');
     }
+
+    public function actionForm()
+    {
+        $model = new Form();
+        if ($model->load(Yii::$app->request->post())) {
+            if ($model->save()) {
+                return $this->goBack();
+            }
+        }
+        return $this->render('form', [
+            'model' => $model,
+        ]);
+    }
+
 }
