@@ -2,6 +2,7 @@
 
 namespace app\controllers;
 
+use app\models\Uschh;
 use Yii;
 use yii\filters\AccessControl;
 use yii\web\Controller;
@@ -9,8 +10,6 @@ use yii\web\Response;
 use yii\filters\VerbFilter;
 use app\models\LoginForm;
 use app\models\ContactForm;
-use app\models\Form;
-use yii\widgets\ActiveField;
 
 class SiteController extends Controller
 {
@@ -34,7 +33,7 @@ class SiteController extends Controller
             'verbs' => [
                 'class' => VerbFilter::className(),
                 'actions' => [
-                    'logout' => ['post'],
+                    'logout' => ['get'],
                 ],
             ],
         ];
@@ -77,6 +76,7 @@ class SiteController extends Controller
             return $this->goHome();
         }
 
+
         $model = new LoginForm();
         if ($model->load(Yii::$app->request->post()) && $model->login()) {
             return $this->goBack();
@@ -105,15 +105,14 @@ class SiteController extends Controller
      *
      * @return Response|string
      */
-    public function actionContact()
+    public function actionReg()
     {
-        $model = new ContactForm();
-        if ($model->load(Yii::$app->request->post()) && $model->contact(Yii::$app->params['adminEmail'])) {
-            Yii::$app->session->setFlash('contactFormSubmitted');
-
-            return $this->refresh();
+        $model = new Uschh();
+        if ($model->load(Yii::$app->request->post())) {
+            $model->save();
+            return $this->goHome();
         }
-        return $this->render('contact', [
+        return $this->render('reg', [
             'model' => $model,
         ]);
     }
@@ -126,17 +125,5 @@ class SiteController extends Controller
     public function actionAbout()
     {
         return $this->render('about');
-    }
-
-    public function actionForm()
-    {
-        $model = new Form();
-        if ($model->load(Yii::$app->request->post()) && $model->save()) {
-
-            return $this->redirect('index');
-        }
-            return $this->render('form', [
-                    'model' => $model,
-                ]);
     }
 }

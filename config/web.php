@@ -11,6 +11,17 @@ $config = [
         '@bower' => '@vendor/bower-asset',
         '@npm'   => '@vendor/npm-asset',
     ],
+
+    'modules' => [
+        'excel' => [
+            'class'  => 'uranum\excel\Module',
+            'params' => [
+                'uploadPath' => 'uploads', // the path relative to the root
+                'fileName'   => 'export',
+                'extensions' => 'xls, xlsx',
+            ],
+        ],
+    ],
     'components' => [
 
         'request' => [
@@ -21,7 +32,7 @@ $config = [
             'class' => 'yii\caching\FileCache',
         ],
         'user' => [
-            'identityClass' => 'app\models\User',
+            'identityClass' => 'app\models\Uschh',
             'enableAutoLogin' => true,
         ],
         'errorHandler' => [
